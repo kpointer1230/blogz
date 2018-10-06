@@ -10,12 +10,20 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:Ktp1206@lo
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
+    #model class for database
+class Blog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db, String(120))
+    body = db.Column(db.Text(560))
 
-tasks = []
+    #Initialize Blog Class
+    def __init__(self, title, body):
+        self.title = title
+        self.body = body
 
-@app.route('/', methods=['POST', 'GET'])
-def index():
-    if request.method == 'POST':
-        task = request.form['task']
-        tasks.append(task)
-    return render_template('')
+    #string representation of the blog objects
+    def __repr__(self):
+        return '<Blog %r>' % self.name
+
+
+
