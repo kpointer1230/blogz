@@ -26,4 +26,27 @@ class Blog(db.Model):
         return '<Blog %r>' % self.name
 
 
+@app.route('/newpost', methods=['POST', 'GET'])
+def index():
+
+        if request.method == 'GET':
+            return render_template('new_posts.html', title='Add Blog Entry')
+
+@app.route('/blog', methods=['POST', 'GET'])   
+def blog_entry():
+
+    if request.method =='GET':
+        post_id = request.args.get('id')
+
+
+    if type(post_id) == str:
+        posts = Blog.query.get(post_id)
+        return render_template('view_post.html', title='Blog post #' + str(post_id), posts=posts)
+
+        
+            
+
+
+
+
 
