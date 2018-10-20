@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <style type='text/css'>
+            .error {
+                color: red;
+                font-style: italic;
+            }
+            .link2 {
+                padding-left: 15px;
+            }
+            .top-title{
+                padding-left: 550px;
+                font-size: 32pt;
+            }
+            a {
+                font-family: sans-serif;
+                font-weight: normal;
+            }
+            label {
+                display: block;
+            }
+            p {
+                font-size: 14pt;
+                font-weight: normal;
+            }
+            textarea {
+                display: block;
+            }
+            #div-cont {
+                padding-left: 20px
+            }
+            hr {
+                height: .2px;
+            }
+        </style>
+        <title>{{title}}</title>
+    </head>
+<body>
+
+    <div>
+        <a href='/blog'>Main Blog Page</a> <a href='/newpost' class='link2'>Add a Blog Entry</a>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>
