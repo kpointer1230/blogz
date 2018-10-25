@@ -6,7 +6,7 @@ import flask
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:Ktp1206@localhost:8889/build-a-blog'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:code123@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -26,13 +26,26 @@ class Blog(db.Model):
         return '<Blog %r>' % self.name
 
 
+#signup route handler functions
+@app.route('/signup', methods=['POST', 'GET'])
+def singleUser(signup):
+
+#login route handler functions
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+
+#index route handler functions
+@app.route('/index', methods=['POST', 'GET'])  
+def index():  
+
+#new_posts route handler functions
 @app.route('/newpost', methods=['POST', 'GET'])
 def index():
 
     if request.method == 'GET':
         return render_template('new_posts.html', title='Add Blog Entry')
 
-
+#blog_entry route handler functions
 @app.route('/blog', methods=['POST','GET'])
 def blog_entry():
 
@@ -72,6 +85,6 @@ def blog_entry():
         else:
             return render_template('new_posts.html', title_error=title_error, body_error=body_error)
 
-
+#app shieled by if name main function
 if __name__ == '__main__':
     app.run()
