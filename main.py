@@ -13,8 +13,15 @@ db = SQLAlchemy(app)
     #model class for database
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db. String(120))
+    title = db.Column(db.String(120))
     body = db.Column(db.Text(560))
+
+    #model class for user
+class User(db.Model):
+    owner_id = db.Column(db.Integer, primary_key=True)    
+    owner_title = db.Column(db.String(120))
+    owner_body = db.Column(db.Text(560 ))
+
 
     #Initialize Blog Class
     def __init__(self, title, body):
@@ -36,7 +43,8 @@ def login():
 
 #index route handler functions
 @app.route('/index', methods=['POST', 'GET'])  
-def index():  
+def index():
+    if request.method == 'POST':    
 
 #new_posts route handler functions
 @app.route('/newpost', methods=['POST', 'GET'])
