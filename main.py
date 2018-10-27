@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, render_template, flash
 from flask_sqlalchemy import SQLAlchemy 
 import cgi
 import flask
+from sys import exit
 
 
 app = Flask(__name__)
@@ -58,26 +59,107 @@ def require_login():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        username = requset.form['username']
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        print(user)
+
+        if user and user.password == password:
+            session['username'] = username
+            return redirect('/newpost')
+        else:
+            no_user = "Sorry you do not have an account, go ahead and create one!" 
+            return render_template('signup.html', error=no_user)   
+
+    if request.method == 'GET':
+        return render_template('login.html', title='Blogz')
 
 
 #signup route handler functions
 @app.route('/signup', methods=['POST', 'GET'])
-def singleUser(signup):
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        verify = request.form['verify']
+        
+    if username == '':
+        no_username = "This field is required please enter!"
+        return render_template('signup.html', user_error=no_username)
+
+    if password == '':
+        no_password = "This field is required please enter!"
+        return render_template('signup.html', password_error=no_password)
+
+    if verify == '': 
+        not_verified = "Verify password is required."
+        return render_template('singup.html', verify_error=not_verified)
+
+    if password != verify:
+        no_match = "Please enter matching passwords."
+        return render_template('signup.html', match_error=no_match)
+
+def check_len(input):
+    if len(input) >= 8:
+        return True
+    else:
+        return False
 
 
-#index route handler functions
-@app.route('/index', methods=['POST', 'GET'])  
-def index():
-    if request.method == 'POST': 
+def check_special(input):
+    specials = 0
+    special_list = "! @ $ % ^ & * ( ) _ - + = { } [ ] | \ , . > < / ? ~ ` \" ' : ;".split()
+    for char in input:
+        if char in special_list:
+            specials += 1
+    if specials > 0:
+        return True
+    else:
+        return False
+
+        existing_user = User.query.filter_by(username=username).first()
+        if not existing_user:
+            new_user = User(username, password)
+            db.session.add(new_user)
+            db.session.commit()
+            session['username'] = username
+            return redirect('/newpost')
+
+            if existing_user:
+                user_exists = "There is already a user with that name."
+                return render_template('signup.html', error=user_exists)
+
+    if request.method == 'GET':
+        return render_template('signup.html', title='Blogz')        
+ 
            
+@app.route('/logout')
+def logout():
+    if 'username' in session:
+        del session['username']
+        return redirect('/blog')
+    else:
+        return redirect('/blog')
+
+
+  #index route handler functions
+@app.route('/', methods=['GET'])  
+def index():
+    users = User.query.all()
+    posts = Blog.query.all()
+    return render_template('index.html', title='Blogz', users=users, posts=posts)
+
 
 #new_posts route handler functions
 @app.route('/newpost', methods=['POST', 'GET'])
-def index():
+def newpost():
 
     if request.method == 'GET':
-        return render_template('new_posts.html', title='Add Blog Entry')
+        return render_template('new_posts.html', title='Blogz')
+
+
+@app.route('/blogs')
+def single_User():
 
 
 #blog_entry route handler functions
