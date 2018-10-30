@@ -2,12 +2,25 @@
 <html>
     <head>
         <style type='text/css'>
-            .error {
+            .error, .logged-out{
                 color: red;
                 font-style: italic;
             }
-            .link2 {
+            .logged-in{
+                color: green;
+                font-style: italic;
+            }
+            .link1{
+                margin-top: 45px;
+                padding-left: 312px;
+            }
+            .link2, .link3, .link5 {
+                margin-top: 45px;
                 padding-left: 15px;
+            }
+            .link4{
+                margin-top: 45px;
+                padding-left: 480px;
             }
             .top-title{
                 padding-left: 550px;
@@ -34,14 +47,19 @@
                 height: .2px;
             }
         </style>
+        {% if 'username' in session %}
+        <p class='logged-in'>{{ session['username'] }} is logged in</p>
+        {% else %}
+        <p class='logged-out'>No user currently logged into Blogz</p>
+        {% endif %}
         <title>{{title}}</title>
     </head>
 <body>
 
     <div>
-        <a href='/blog'>Main Blog Page</a> <a href='/newpost' class='link2'>Add a Blog Entry</a>
+        <a href='/' class='link1'>Home</a><a href="/blog" class='link2'>All Posts</a><a href='/newpost' class='link3'>New Post</a>
+        <a href="/login" class='link4'>Login</a><a href='/logout' class='link5'>Logout</a>
     </div>
-    
 
     {% block content %}
     {% endblock %}
