@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import cgi
 import flask
 
+
 app = Flask(__name__)
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:code123@localhost:8889/blogz'
@@ -84,17 +85,6 @@ def signup():
             no_match = "Please enter matching passwords"
             return render_template('signup.html', match_error=no_match)
 
-
-def check_special(input):
-    specials = 0
-    special_list = "! @ $ % ^ & * ( ) _ - + = { } [ ] | \ , . > < / ? ~ ` \" ' : ;".split()
-    for char in input:
-        if char in special_list:
-            specials += 1
-    if specials > 0:
-        return True
-    else:
-        return False
 
         existing_user = User.query.filter_by(username=username).first()
         if not existing_user:
