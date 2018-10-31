@@ -101,6 +101,8 @@ def signup():
     if request.method == 'GET':
         return render_template('signup.html', title='Blogz')
 
+
+
 @app.route('/logout')
 def logout():
     if 'username' in session:
@@ -139,9 +141,6 @@ def blog_entry():
             if type(post_id) == str:
                 posts = Blog.query.get(post_id)
                 return render_template('view_post.html', posts=posts)
-                if post_id in post_users:
-                    posts = User.query.filter_by(username=post_id).first()
-                    return render_template('single_User.html', posts=posts)
             else:
                 posts = Blog.query.all()
                 return render_template('blog_entry.html', title='Blogz',
